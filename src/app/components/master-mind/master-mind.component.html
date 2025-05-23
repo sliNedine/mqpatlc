@@ -1,1 +1,16 @@
 <p class="red">master-mind works!</p>
+<h1>Lösung</h1>
+@for (item of solution; track $index) {
+<div [class]="colorMap[item]">
+  {{ colorMap[item] }}
+</div>
+}
+<h1>Tipp</h1>
+@for (item of guess; track $index) {
+<div
+  (click)="changeSingleGuessColor($index)"
+  [class]="item ? colorMap[item] : ''"
+>
+  {{ item ? colorMap[item] : "nix" }}
+</div>
+}
