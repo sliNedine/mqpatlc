@@ -18,6 +18,7 @@ export class MainMenuComponent {
   private colorService = inject(ColorServiceService);
 
   unlockRed() {
+    console.log('rot');
     this.colorService.unlockChannel('r');
   }
 
