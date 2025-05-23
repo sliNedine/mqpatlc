@@ -1,2 +1,0 @@
-export default `:root{--actualR: 1;--actualG: 1;--actualB: 1}svg{background-color:#d3d3d3}.red{stroke:rgb(var(--actualR),0,0)}.green{stroke:rgb(0,var(--actualG),0)}.blue{stroke:rgb(0,0,var(--actualB))}.yellow{stroke:rgb(var(--actualR),var(--actualG),0)}.purple{stroke:rgb(var(--actualR),0,var(--actualB))}
-`;
