@@ -1,16 +1,33 @@
 <p class="red">master-mind works!</p>
 <h1>Lösung</h1>
-@for (item of solution; track $index) {
-<div [class]="colorMap[item]">
-  {{ colorMap[item] }}
+<div style="display: flex">
+  @for (item of solution; track $index) {
+  <div [class]="colorMap[item!]" class="circle"></div>
+  }
 </div>
-}
-<h1>Tipp</h1>
-@for (item of guess; track $index) {
-<div
-  (click)="changeSingleGuessColor($index)"
-  [class]="item ? colorMap[item] : ''"
->
-  {{ item ? colorMap[item] : "nix" }}
+<h1>Tipps</h1>
+<button (click)="makeGuess()">Tipp abgeben!!</button>
+<div>
+  @for (guess of guesses; track $index; let i = $index) {
+  <div style="display: flex">
+    @for (item of guess; track $index; ) { @if(item) { @if(i == round) {
+
+    <div
+      [class]="colorMap[item!]"
+      class="circle"
+      (click)="changeSingleGuessColor(i, $index)"
+    ></div>
+    } @else {
+    <div class="circle" [class]="colorMap[item]"></div>
+    } } @else if(i === round) {
+    <div class="circle" (click)="changeSingleGuessColor(i, $index)"></div>
+    } @else {
+    <div class="circle"></div>
+    }}
+  </div>
+  }
 </div>
+
+@for(item of tips; track $index) {
+<div style="display: flex">@for (tip of item; track $index) { {{ tip }}}</div>
 }
