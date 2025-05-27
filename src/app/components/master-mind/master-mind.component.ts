@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, signal } from '@angular/core';
 
 export const colorMap: Record<number, string> = {
@@ -33,7 +34,7 @@ export type Tip = 'color' | 'nope' | 'hit';
 
 @Component({
   selector: 'app-master-mind',
-  imports: [],
+  imports: [NgClass],
   templateUrl: './master-mind.component.html',
   styleUrl: './master-mind.component.scss',
 })

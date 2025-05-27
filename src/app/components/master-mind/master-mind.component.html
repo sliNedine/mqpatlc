@@ -8,27 +8,40 @@
 <h1>Tipps</h1>
 <button (click)="makeGuess()">Tipp abgeben!!</button>
 <button (click)="resetGame()">Reset</button>
-<div>
+<div style="display: flex; flex-direction: column">
   @for (guess of guesses; track $index; let i = $index) {
   <div style="display: flex">
-    @for (item of guess; track $index; ) { @if(item) { @if(i == round) {
+    <div style="display: flex">
+      @for (item of guess; track $index; ) { @if(item) { @if(i == round) {
 
-    <div
-      [class]="colorMap[item!]"
-      class="circle"
-      (click)="changeSingleGuessColor(i, $index)"
-    ></div>
-    } @else {
-    <div class="circle" [class]="colorMap[item]"></div>
-    } } @else if(i === round) {
-    <div class="circle" (click)="changeSingleGuessColor(i, $index)"></div>
-    } @else {
-    <div class="circle"></div>
-    }}
+      <div
+        [class]="colorMap[item!]"
+        class="circle"
+        (click)="changeSingleGuessColor(i, $index)"
+      ></div>
+      } @else {
+      <div class="circle" [class]="colorMap[item]"></div>
+      } } @else if(i === round) {
+      <div class="circle" (click)="changeSingleGuessColor(i, $index)"></div>
+      } @else {
+      <div class="circle"></div>
+      }}
+    </div>
+    @for(tip of tips[i]; track $index) {
+    <div style="display: flex; justify-content: center; align-items: center">
+      <div
+        class="tip"
+        [ngClass]="{
+          green: tip === 'hit',
+          blue: tip === 'color',
+          grey: tip === 'nope'
+        }"
+      ></div>
+    </div>
+
+    } @if(round === i) {
+    <p style="padding-left: 2rem">&larr; Aktuelle Runde</p>
+    }
   </div>
   }
 </div>
-
-@for(item of tips; track $index) {
-<div style="display: flex">@for (tip of item; track $index) { {{ tip }}}</div>
-}
