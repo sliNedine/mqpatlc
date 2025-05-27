@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class ColorServiceService {
+export class ColorService {
   private channelVars = {
     r: '--actualR',
     g: '--actualG',

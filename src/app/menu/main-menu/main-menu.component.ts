@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ColorServiceService } from '../../services/color-service.service';
+import { ColorService } from '../../services/color.service';
+import { MasterMindComponent } from '../../components/master-mind/master-mind.component';
 
 interface GameColor {
   realR: number;
@@ -11,14 +12,13 @@ interface GameColor {
 @Component({
   selector: 'app-main-menu',
   templateUrl: './main-menu.component.html',
-  imports: [CommonModule],
+  imports: [CommonModule, MasterMindComponent],
   styleUrl: './main-menu.component.scss',
 })
 export class MainMenuComponent {
-  private colorService = inject(ColorServiceService);
+  private colorService = inject(ColorService);
 
   unlockRed() {
-    console.log('rot');
     this.colorService.unlockChannel('r');
   }
 
