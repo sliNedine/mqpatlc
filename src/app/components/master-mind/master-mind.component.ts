@@ -40,7 +40,7 @@ export type Tip = 'color' | 'nope' | 'hit';
 export class MasterMindComponent {
   protected solution: Guess;
   protected guesses: Guesses = [
-    [2, 3, 5, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined],
     [undefined, undefined, undefined, undefined, undefined],
     [undefined, undefined, undefined, undefined, undefined],
     [undefined, undefined, undefined, undefined, undefined],
@@ -94,57 +94,118 @@ export class MasterMindComponent {
   }
 
   protected changeSingleGuessColor(round: number, index: number): void {
-    console.log('haallo');
-    const value = this.guesses[round][index];
-    if (value === undefined) {
-      this.guesses[round][index] = 1;
-    } else if (value === 5) {
-      this.guesses[round][index] = undefined;
-    } else {
-      this.guesses[round][index] = this.guesses[round][index]! + 1;
+    if (!this.isWin()) {
+      const value = this.guesses[round][index];
+      if (value === undefined) {
+        this.guesses[round][index] = 1;
+      } else if (value === 5) {
+        this.guesses[round][index] = undefined;
+      } else {
+        this.guesses[round][index] = this.guesses[round][index]! + 1;
+      }
     }
   }
 
+  protected resetGame(): void {
+    this.solution = this.createSolution();
+    this.round = 0;
+    this.guesses = [
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined],
+    ];
+    this.tips = [
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+      ['nope', 'nope', 'nope', 'nope', 'nope'],
+    ];
+  }
+
   protected makeGuess(): void {
-    console.log('Guess');
-    let tipse: Tip[] = [];
-    let indexOutSol = [false, false, false, false, false];
-    let indexOutGuess = [false, false, false, false, false];
+    if (
+      !this.isWin() &&
+      this.round !== 10 &&
+      this.guesses[this.round][0] !== undefined &&
+      this.guesses[this.round][1] !== undefined &&
+      this.guesses[this.round][2] !== undefined &&
+      this.guesses[this.round][3] !== undefined &&
+      this.guesses[this.round][4] !== undefined
+    ) {
+      let tipse: Tip[] = [];
+      let indexOutSol = [false, false, false, false, false];
+      let indexOutGuess = [false, false, false, false, false];
 
-    // Erst Treffer (richtige Zahl am richtigen Platz)
-    for (let i = 0; i < 5; i++) {
-      if (this.guesses[this.round][i] === this.solution[i]) {
-        tipse[i] = 'hit';
-        indexOutSol[i] = true;
-        indexOutGuess[i] = true;
+      // Erst Treffer (richtige Zahl am richtigen Platz)
+      for (let i = 0; i < 5; i++) {
+        if (this.guesses[this.round][i] === this.solution[i]) {
+          tipse[i] = 'hit';
+          indexOutSol[i] = true;
+          indexOutGuess[i] = true;
+        }
       }
-    }
 
-    // Dann Farben (richtige Zahl am falschen Platz)
-    for (let i = 0; i < 5; i++) {
-      if (!indexOutGuess[i]) {
-        for (let j = 0; j < 5; j++) {
-          if (
-            !indexOutSol[j] &&
-            this.guesses[this.round][i] === this.solution[j]
-          ) {
-            tipse[i] = 'color';
-            indexOutSol[j] = true;
-            break;
+      // Dann Farben (richtige Zahl am falschen Platz)
+      for (let i = 0; i < 5; i++) {
+        if (!indexOutGuess[i]) {
+          for (let j = 0; j < 5; j++) {
+            if (
+              !indexOutSol[j] &&
+              this.guesses[this.round][i] === this.solution[j]
+            ) {
+              tipse[i] = 'color';
+              indexOutSol[j] = true;
+              break;
+            }
           }
         }
       }
-    }
 
-    tipse = this.shuffle(tipse);
-    for (let i = 0; i < 5; i++) {
-      if (!tipse[i]) {
-        tipse[i] = 'nope';
+      tipse = this.shuffle(tipse);
+      for (let i = 0; i < 5; i++) {
+        if (!tipse[i]) {
+          tipse[i] = 'nope';
+        }
+        this.tips[this.round][i] = tipse[i];
       }
-      this.tips[this.round][i] = tipse[i];
+      //check if win?
+      if (
+        tipse[0] == 'hit' &&
+        tipse[1] == 'hit' &&
+        tipse[2] == 'hit' &&
+        tipse[3] == 'hit' &&
+        tipse[4] == 'hit'
+      ) {
+        this.isWin.set(true);
+        alert('Glückwunsch. Du hast gewonnen!');
+      } else {
+        if (this.round !== 10) {
+          this.round++;
+        }
+        if (this.round === 10) {
+          alert('Du hast leider veloren...versuch es doch noch einmal.');
+        }
+      }
+    } else if (this.round === 10) {
+      alert('Du hast doch verloren...du musst reset drücken. Sorry!');
+    } else if (!this.isWin()) {
+      alert('Du musst schon 5 Tips abgeben ;)');
+    } else {
+      alert('Du hast doch schon gewonnen...');
     }
-
-    this.round++;
   }
   private shuffle<T>(array: T[]): T[] {
     const result = [...array]; // Nicht original-Array mutieren

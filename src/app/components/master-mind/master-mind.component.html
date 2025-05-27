@@ -1,12 +1,13 @@
 <p class="red">master-mind works!</p>
 <h1>Lösung</h1>
-<div style="display: flex">
+<!-- <div style="display: flex">
   @for (item of solution; track $index) {
   <div [class]="colorMap[item!]" class="circle"></div>
   }
-</div>
+</div> -->
 <h1>Tipps</h1>
 <button (click)="makeGuess()">Tipp abgeben!!</button>
+<button (click)="resetGame()">Reset</button>
 <div>
   @for (guess of guesses; track $index; let i = $index) {
   <div style="display: flex">
